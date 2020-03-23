@@ -54,7 +54,7 @@ class EmceeChi2Fitter(Fitter):
     """
     function fitter minimising Chi-squared
     using MCMC parameter space sampling via emcee package
-    
+
     input parameters
     - function      : function to fit
     - observations  : measurements to use in Chi-squared optimisation
@@ -74,10 +74,10 @@ class EmceeChi2Fitter(Fitter):
             tmod = self.func(self.xobs, *theta)
             tobs = self.yobs
             terr = self.errs
-            if terr:
-                chi = (tobs-tmod)**2 / terr**2
-            else: 
+            if terr is None:
                 chi = (tobs-tmod)**2 / tmod
+            else:
+                chi = (tobs-tmod)**2 / terr**2
             LL = -sum(chi) / 2
         except:
             return -float_info.max
