@@ -12,8 +12,8 @@ class Fitter(object):
     def __init__(self, ranges, priors='uniform', **kwargs):
         super(Fitter, self).__init__()
         self.nWalkers = kwargs['walkers'] if 'walkers' in kwargs else 100
-        self.nThreads = kwards['threads'] if 'threads' in kwargs else 1
-        self.nBurnin = kwargs['burnin'] if 'burnin' in kwargs else 0
+        self.nThreads = kwargs['threads'] if 'threads' in kwargs else None
+        self.nBurnin = kwargs['burnin'] if 'burnin' in kwargs else None
         self.nSteps = kwargs['steps'] if 'steps' in kwargs else 1000
         self.Xargs = ranges.keys()
         self.nDim = len(ranges)
@@ -57,7 +57,8 @@ class EmceeChi2Fitter(Fitter):
 
     input parameters
     - function      : function to fit
-    - observations  : measurements to use in Chi-squared optimisation
+    - xobs          : abscissa of the observational points
+    - yobs          : ordinate of the observational points
     - ranges        : dictionary with prior ranges on parameters
     - priors        : prior distribution of choice (for now, only uniform)
     - kwargs        : keyword arguments for setting emcee sampler
