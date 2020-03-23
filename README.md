@@ -8,7 +8,14 @@ Subsequent minimisation of the Chi-squared over all possible samples, returns th
 
 ### Characteristics  
 
-`class Fitter` : base class meant for  
+`Fitter` : base class meant for  
 - initialising default parameters for the the **emcee** sampler  
 - defining the (log)prior density distribution function (default='*uniform*')  
 - initialise the initial parameters coordinate array for the sampling  
+
+`EmceeChi2Fitter` : main class to perform the function optimisation  
+The instance can be call via a `__call__` nethod where the *Affine Invariant* is performed  
+Returns  
+- *least squared* parameters array  
+- `samples` array, containing all parameters values sampled  
+- `lnprobs` array, containing all Chi-squared values corresponding to `samples` coordinates
