@@ -54,16 +54,15 @@ class EmceeChi2Fitter(Fitter):
     """
     function fitter minimising Chi-squared
     using MCMC parameter space sampling via emcee package
+    
+    input parameters
+    - function      : function to fit
+    - observations  : measurements to use in Chi-squared optimisation
+    - ranges        : dictionary with prior ranges on parameters
+    - priors        : prior distribution of choice (for now, only uniform)
+    - kwargs        : keyword arguments for setting emcee sampler
     """
     def __init__(self, function, xobs, yobs, errors=None, *args, **kwargs):
-        """
-        input parameters
-        - function      : function to fit
-        - observations  : measurements to use in Chi-squared optimisation
-        - ranges        : dictionary with prior ranges on parameters
-        - priors        : prior distribution of choice (for now, only uniform)
-        - kwards        : keyword arguments for setting emcee sampler
-        """
         super(EmceeChi2Fitter, self).__init__(*args, **kwargs)
         self.func = function
         self.errs = errors
@@ -71,7 +70,6 @@ class EmceeChi2Fitter(Fitter):
         self.yobs = yobs
 
     def lnLike(self, theta):
-        #new_theta.append(np.inf)
         try:
             tmod = self.func(self.xobs, *theta)
             tobs = self.yobs
