@@ -3,13 +3,12 @@ __author__='Andrea Chiappo'
 __email__='chiappo.andrea@gmail.com'
 
 import numpy as np
-from inspect import signature
 from sys import float_info
 from emcee import EnsembleSampler
 
 class Fitter(object):
     """Base class for EmceeChi2Fitter"""
-    def __init__(self, ranges, priors='uniform', **kwargs):
+    def __init__(self, ranges, priors='uniform', scale='linear', **kwargs):
         super(Fitter, self).__init__()
         self.nWalkers = kwargs['walkers'] if 'walkers' in kwargs else 100
         self.nThreads = kwargs['threads'] if 'threads' in kwargs else None
@@ -19,6 +18,7 @@ class Fitter(object):
         self.nDim = len(ranges)
         self.ranges = ranges
         self.priors = priors
+        self.scale = scale
         self._initial_parameters()
 
     def _initial_parameters(self):
@@ -32,7 +32,12 @@ class Fitter(object):
                 for p,par in enumerate(self.Xargs):
                     pL,pR = self.ranges[par]
                     p0 = np.random.uniform(low=pL,high=pR)
-                    pos0[w,p] = p0
+                    if self.scale="linear":
+                        pos0[w,p] = p0
+                    elif self.scale="log":
+                        pos0[w,p] = 10**p0
+                    else:
+                        raise Exception("prior scale must be set")
             self.pos0 = pos0
         else:
             raise Exception("only uniform priors implemented")
