@@ -32,12 +32,7 @@ class Fitter(object):
                 for p,par in enumerate(self.Xargs):
                     pL,pR = self.ranges[par]
                     p0 = np.random.uniform(low=pL,high=pR)
-                    if self.scale="linear":
-                        pos0[w,p] = p0
-                    elif self.scale="log":
-                        pos0[w,p] = 10**p0
-                    else:
-                        raise Exception("prior scale must be set")
+                    pos0[w,p] = p0
             self.pos0 = pos0
         else:
             raise Exception("only uniform priors implemented")
@@ -76,6 +71,8 @@ class EmceeChi2Fitter(Fitter):
         self.yobs = yobs
 
     def lnLike(self, theta):
+        if self.scale=="log":
+            theta = np.power(10, theta)
         try:
             tmod = self.func(self.xobs, *theta)
             tobs = self.yobs
@@ -130,7 +127,12 @@ class EmceeChi2Fitter(Fitter):
         lnprobs = sampler.flatlnprobability
 
         indxs = np.where(lnprobs>-float_info.max)[0]
-        samples = samples[indxs]
+        if self.scale=='linear':
+            samples = samples[indxs]
+        elif self.scale=='log':
+            samples = np.power(10,samples[indxs])
+        else:
+            raise Exception("prior scale must be set")
         lnprobs = lnprobs[indxs]
         
         Xmin = max(lnprobs)
