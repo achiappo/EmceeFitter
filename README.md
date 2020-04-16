@@ -15,7 +15,7 @@ Meant for
 
 Input arguments  
 - `ranges`  : dictionary consisting of parameter names as keys, and tuple of numerical ranges allowed as items  
-- `priors`  : categorical name of prior density distribution function (default=*uniform*  - only this implemented now)
+- `priors`  : categorical name of prior density distribution function (default=*uniform*, available *log*)
 - `walkers` : number of walkers in the Affine Invariant sampler (default=100)  
 - `threads` : number of threads to open to parallelise the computations (default=None) 
 - `burnin`  : number of burn-in steps to perform (default=None)
