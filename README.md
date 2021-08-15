@@ -1,5 +1,5 @@
 # EmceeFitter
-## Function optimisation interface via Chi-squared MCMC sampling and minimisation
+## Function optimisation interface via MCMC sampling and Chi-squared minimisation
 
 Simple module containing a Python 3 interface to perform function optimisation by minimising the Chi-squared, given some observational data.  
 
